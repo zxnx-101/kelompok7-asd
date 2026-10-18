@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block judul %}Rekursif{% endblock %}
+
+{% block isi %}
+
+<h1 class="judul-halaman">🪆 Rekursif: Boneka di Dalam Boneka</h1>
+
+<!-- ===== Penjelasan konsep dengan bahasa sederhana ===== -->
+<section class="kotak-penjelasan">
+  <h2>Apa itu Rekursif? 🤔</h2>
+  <p>Pernah lihat boneka matryoshka? Buka satu boneka, di dalamnya ada boneka yang
+     lebih kecil, buka lagi ada yang lebih kecil lagi, sampai ketemu boneka paling kecil yang
+     tidak bisa dibuka. Nah, itu <b>rekursif</b>!</p>
+  <p>Dalam pemrograman, rekursif berarti <b>sebuah fungsi memanggil dirinya sendiri</b>
+     untuk menyelesaikan masalah yang lebih kecil. Ada 2 hal penting:</p>
+  <p>🛑 <b>Kasus dasar</b>: kapan harus berhenti (boneka terkecil).<br>
+     🔁 <b>Kasus rekursif</b>: memanggil diri sendiri dengan masalah yang lebih kecil.</p>
+</section>
+
+<!-- ===== PUZZLE 1: Menara Hanoi ===== -->
+<section class="kartu">
+  <h2>🗼 Puzzle 1: Menara Hanoi</h2>
+  <p>Pindahkan semua piringan dari tiang <b>A</b> ke tiang <b>C</b>.
+     Aturannya: pindah <b>satu piringan</b> setiap kali, dan
+     <b>piringan besar tidak boleh di atas piringan kecil</b>.</p>
+  <p>Cara main: <b>ketuk tiang asal</b>, lalu <b>ketuk tiang tujuan</b>.</p>
+  <p><b>Rahasia rekursifnya:</b> untuk memindah <i>n</i> piringan, pindahkan dulu
+     <i>n-1</i> piringan ke tiang bantu, pindahkan piringan terbesar ke tujuan,
+     lalu pindahkan <i>n-1</i> piringan tadi ke atasnya. Masalahnya mengecil terus! 🪆</p>
+
+  <div class="baris-tombol">
+    <label class="label-kecil" for="pilih-piringan">Jumlah piringan:</label>
+    <select id="pilih-piringan" class="pilihan">
+      <option value="2">2</option>
+      <option value="3" selected>3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+    <button id="btn-hanoi-reset" class="tombol tombol-oranye">🔄 Mulai Ulang</button>
+    <button id="btn-hanoi-solusi" class="tombol tombol-hijau">💡 Lihat Solusi</button>
+  </div>
+
+  <div id="info-hanoi" class="area-pesan"></div>
+
+  <!-- Tiga tiang. Piringan digambar oleh JavaScript -->
+  <div id="papan-hanoi" class="papan-hanoi">
+    <div class="tiang" id="tiang-A" data-nama="A"></div>
+    <div class="tiang" id="tiang-B" data-nama="B"></div>
+    <div class="tiang" id="tiang-C" data-nama="C"></div>
+  </div>
+
+  <div id="pesan-hanoi" class="area-pesan"></div>
+</section>
+
+<!-- ===== PUZZLE 2: Jejak Pemanggilan Fungsi ===== -->
+<section class="kartu">
+  <h2>🔎 Puzzle 2: Intip Pemanggilan Fungsi</h2>
+  <p>Pilih fungsi dan sebuah angka, lalu lihat bagaimana fungsi memanggil dirinya sendiri.
+     <span style="color:#1F5F99;">Biru</span> = fungsi dipanggil,
+     <span style="color:#17766C;">hijau</span> = fungsi mengembalikan hasilnya.</p>
+
+  <div class="baris-tombol">
+    <label class="label-kecil" for="pilih-jenis">Fungsi:</label>
+    <select id="pilih-jenis" class="pilihan">
+      <option value="faktorial" selected>Faktorial (n!)</option>
+      <option value="fibonacci">Fibonacci</option>
+    </select>
+    <label class="label-kecil" for="input-n-rekursi">Angka n:</label>
+    <input id="input-n-rekursi" class="input-angka" type="number" inputmode="numeric" min="0" max="8" value="4">
+    <button id="btn-jejak" class="tombol tombol-biru">▶️ Lihat Jejaknya</button>
+  </div>
+
+  <div id="hasil-rekursi" class="area-pesan"></div>
+  <div id="jejak" class="jejak"></div>
+</section>
+
+{% endblock %}
+
+{% block skrip %}
+<script src="{{ url_for('static', filename='js/rekursif.js') }}"></script>
+{% endblock %}

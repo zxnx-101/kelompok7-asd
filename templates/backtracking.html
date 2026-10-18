@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block judul %}Laberin{% endblock %}
+
+{% block isi %}
+
+<h1 class="judul-halaman">🌀 Backtracking: Petualangan Laberin</h1>
+
+<!-- ===== Penjelasan konsep dengan bahasa sederhana ===== -->
+<section class="kotak-penjelasan">
+  <h2>Apa itu Backtracking? 🤔</h2>
+  <p>Bayangkan kamu tersesat di taman labirin. Kamu pilih satu jalan dan terus berjalan.
+     Eh, ternyata <b>buntu</b>! Apa yang kamu lakukan? Kamu <b>mundur</b> ke persimpangan
+     terakhir, lalu <b>mencoba jalan lain</b>.</p>
+  <p>Itulah <b>backtracking</b>: <b>coba</b> sebuah pilihan, kalau buntu <b>mundur</b>,
+     lalu coba pilihan berikutnya, sampai ketemu jalan keluar. Komputer melakukannya dengan
+     cara yang sama, dan biasanya memakai <b>rekursif</b> juga! 🪆</p>
+</section>
+
+<!-- ===== Papan laberin ===== -->
+<section class="kartu">
+  <h2>🐭 Bantu tikus menemukan keju!</h2>
+  <p>Gerakkan tikus 🐭 dari <b>🚩 start</b> ke <b>🧀 keju</b> dengan tombol panah di bawah
+     (atau tombol panah / W A S D di keyboard). Kalau buntu, <b>melangkah balik</b> ke petak
+     sebelumnya untuk mundur. Menyerah? Tekan <b>Lihat Solusi</b>!</p>
+
+  <div class="baris-tombol">
+    <label class="label-kecil" for="pilih-ukuran">Ukuran:</label>
+    <select id="pilih-ukuran" class="pilihan">
+      <option value="9">Kecil</option>
+      <option value="11" selected>Sedang</option>
+      <option value="15">Besar</option>
+    </select>
+    <button id="btn-laberin-baru" class="tombol tombol-oranye">🎲 Laberin Baru</button>
+    <button id="btn-ulang" class="tombol tombol-biru">🔄 Mulai Ulang</button>
+    <button id="btn-solusi" class="tombol tombol-hijau">💡 Lihat Solusi</button>
+  </div>
+
+  <!-- Petak laberin digambar oleh JavaScript -->
+  <div id="laberin" class="laberin"></div>
+
+  <!-- Keterangan warna -->
+  <div class="legenda">
+    <span style="--warna: #FFC2D9;">Jalanmu</span>
+    <span style="--warna: #BFD9F5;">Sedang dicoba</span>
+    <span style="--warna: #FFB4B2;">Buntu, mundur</span>
+    <span style="--warna: var(--hijau);">Jalan keluar</span>
+  </div>
+
+  <div id="info-laberin" class="area-pesan" style="text-align:center; margin-top:10px;"></div>
+  <div id="pesan-laberin" class="area-pesan" style="text-align:center;"></div>
+
+  <!-- Tombol arah untuk HP -->
+  <div class="dpad">
+    <button id="btn-atas" class="tombol atas" aria-label="Atas">⬆️</button>
+    <button id="btn-kiri" class="tombol kiri" aria-label="Kiri">⬅️</button>
+    <button id="btn-bawah" class="tombol bawah" aria-label="Bawah">⬇️</button>
+    <button id="btn-kanan" class="tombol kanan" aria-label="Kanan">➡️</button>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block skrip %}
+<script src="{{ url_for('static', filename='js/backtracking.js') }}"></script>
+{% endblock %}

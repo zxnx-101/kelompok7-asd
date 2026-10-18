@@ -1,0 +1,44 @@
+{# Halaman beranda. "extends" berarti halaman ini memakai kerangka dari base.html #}
+{% extends "base.html" %}
+
+{% block judul %}Beranda{% endblock %}
+
+{% block isi %}
+
+<!-- ===== Sapaan di bagian atas ===== -->
+<section class="hero">
+  <div style="font-size: 3.5rem;">🧩✨</div>
+  <h1>Halo, Petualang Algoritma!</h1>
+  <p>Pilih satu petualangan di bawah ini, lalu mainkan puzzle serunya sambil belajar ya!</p>
+</section>
+
+<!-- ===== 3 menu utama (satu kartu per konsep) ===== -->
+<section class="menu-grid">
+
+  <!-- Menu 1: Linked List -->
+  <a href="{{ url_for('halaman_linked_list') }}" class="kartu-menu" style="--warna-menu: var(--biru);">
+    <span class="emoji-besar">🚂</span>
+    <h2>Linked List</h2>
+    <p>Susun gerbong kereta yang tersambung satu per satu!</p>
+    <span class="tombol tombol-biru">Ayo main!</span>
+  </a>
+
+  <!-- Menu 2: Rekursif -->
+  <a href="{{ url_for('halaman_rekursif') }}" class="kartu-menu" style="--warna-menu: var(--oranye);">
+    <span class="emoji-besar">🪆</span>
+    <h2>Rekursif</h2>
+    <p>Seperti boneka matryoshka: ada boneka di dalam boneka!</p>
+    <span class="tombol tombol-oranye">Ayo main!</span>
+  </a>
+
+  <!-- Menu 3: Backtracking -->
+  <a href="{{ url_for('halaman_backtracking') }}" class="kartu-menu" style="--warna-menu: var(--hijau);">
+    <span class="emoji-besar">🌀</span>
+    <h2>Laberin</h2>
+    <p>Cari jalan keluar, kalau buntu tinggal mundur dan coba lagi!</p>
+    <span class="tombol tombol-hijau">Ayo main!</span>
+  </a>
+
+</section>
+
+{% endblock %}

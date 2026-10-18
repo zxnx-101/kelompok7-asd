@@ -1,0 +1,391 @@
+/* =====================================================================
+   style.css - Tema ramah anak: cerah, hangat, bulat, tombol besar
+   Daftar isi:
+     1. Warna & dasar        5. Linked List (node & pointer)
+     2. Navbar & layout      6. Rekursif (Hanoi & jejak panggilan)
+     3. Kartu & penjelasan   7. Backtracking (laberin)
+     4. Tombol & input       8. Toast, konfeti, responsif
+   ===================================================================== */
+
+/* ---------- 1. WARNA & DASAR ---------- */
+:root {
+  --latar: #FFF8E7;          /* krem hangat */
+  --kartu: #FFFFFF;
+  --teks: #3B2F4A;           /* ungu tua: kontras nyaman di atas krem */
+  --teks-lembut: #6B5E7B;
+  --ungu: #7B6CF6;
+  --pink: #FF6B9D;
+  --oranye: #FF9F43;
+  --hijau: #2EC4B6;
+  --kuning: #FFD166;
+  --biru: #4D9DE0;
+  --merah: #EF6F6C;
+  --bulat: 20px;             /* sudut membulat */
+  --bayangan: 0 6px 0 rgba(59, 47, 74, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--teks);
+  background: var(--latar);
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(255, 209, 102, 0.35) 0, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(255, 107, 157, 0.18) 0, transparent 40%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3 { font-family: "Fredoka", "Nunito", sans-serif; font-weight: 600; line-height: 1.25; }
+
+/* ---------- 2. NAVBAR & LAYOUT ---------- */
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 22px;
+  background: var(--ungu);
+  box-shadow: 0 4px 0 rgba(59, 47, 74, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.brand {
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  transition: transform 0.15s, background 0.15s;
+}
+.nav-link:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.3); }
+.nav-link.aktif { background: var(--kuning); color: var(--teks); }
+
+.halaman { flex: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 24px 18px 40px; }
+.judul-halaman { font-size: 2rem; margin: 6px 0 14px; }
+.footer { text-align: center; padding: 16px; color: var(--teks-lembut); font-weight: 600; }
+
+/* ---------- 3. KARTU & PENJELASAN ---------- */
+.kartu {
+  background: var(--kartu);
+  border-radius: var(--bulat);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--bayangan);
+  border: 3px solid #fff;
+}
+.kartu h2 { margin-top: 0; font-size: 1.35rem; }
+
+/* Kotak penjelasan konsep (bahasa sederhana untuk anak) */
+.kotak-penjelasan {
+  background: #FFF1C9;
+  border: 3px dashed var(--oranye);
+  border-radius: var(--bulat);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.kotak-penjelasan h2 { margin: 0 0 6px; font-size: 1.25rem; }
+.kotak-penjelasan p { margin: 6px 0; }
+
+/* Beranda: 3 kartu menu */
+.hero { text-align: center; margin-bottom: 26px; }
+.hero h1 { font-size: 2.4rem; margin: 10px 0 6px; }
+.hero p { color: var(--teks-lembut); font-size: 1.15rem; margin: 0; }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.kartu-menu {
+  display: block;
+  text-decoration: none;
+  color: var(--teks);
+  text-align: center;
+  background: var(--kartu);
+  border-radius: 28px;
+  padding: 28px 18px;
+  box-shadow: var(--bayangan);
+  border: 4px solid var(--warna-menu, var(--ungu));
+  transition: transform 0.2s;
+}
+.kartu-menu:hover { transform: translateY(-6px) rotate(-1deg); }
+.kartu-menu .emoji-besar { font-size: 4rem; display: block; animation: melayang 3s ease-in-out infinite; }
+.kartu-menu h2 { margin: 10px 0 6px; }
+.kartu-menu p { margin: 0 0 14px; color: var(--teks-lembut); }
+
+/* ---------- 4. TOMBOL & INPUT ---------- */
+.tombol {
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fff;
+  background: var(--ungu);
+  border: none;
+  border-radius: 16px;
+  padding: 12px 22px;
+  min-height: 48px;                      /* cukup besar untuk jari */
+  cursor: pointer;
+  box-shadow: 0 5px 0 rgba(59, 47, 74, 0.25);
+  transition: transform 0.1s, box-shadow 0.1s, filter 0.15s;
+  display: inline-block;
+  text-decoration: none;
+}
+.tombol:hover { filter: brightness(1.08); }
+.tombol:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(59, 47, 74, 0.25); }
+.tombol:disabled { opacity: 0.5; cursor: not-allowed; }
+.tombol-hijau { background: var(--hijau); }
+.tombol-oranye { background: var(--oranye); }
+.tombol-pink { background: var(--pink); }
+.tombol-biru { background: var(--biru); }
+.tombol-merah { background: var(--merah); }
+.tombol-abu { background: #9C93AA; }
+.baris-tombol { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; align-items: center; }
+
+.input-angka, .pilihan {
+  font-family: "Nunito", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--teks);
+  border: 3px solid var(--ungu);
+  border-radius: 14px;
+  padding: 10px 14px;
+  min-height: 48px;
+  width: 110px;
+  background: #fff;
+}
+.pilihan { width: auto; }
+.input-angka:focus, .pilihan:focus { outline: 4px solid rgba(123, 108, 246, 0.3); }
+.label-kecil { font-weight: 800; color: var(--teks-lembut); }
+
+/* ---------- 5. LINKED LIST (node & pointer) ---------- */
+.rantai {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 90px;
+  padding: 14px 6px;
+}
+.label-head {
+  font-family: "Fredoka", sans-serif;
+  background: var(--pink);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+}
+.node {
+  position: relative;
+  min-width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+  background: var(--biru);
+  border-radius: 18px;
+  box-shadow: 0 5px 0 rgba(59, 47, 74, 0.2);
+  user-select: none;
+  animation: muncul 0.3s ease-out;
+}
+.node.bisa-geser { cursor: grab; }
+.node.dipilih { outline: 4px solid var(--kuning); transform: translateY(-6px); }
+.node.aktif { background: var(--oranye); transform: scale(1.15); }   /* sedang dikunjungi saat traverse */
+.node.benar { background: var(--hijau); }
+.node.salah { background: var(--merah); animation: goyang 0.4s; }
+.panah { font-size: 1.6rem; color: var(--ungu); font-weight: 800; }
+.null-kotak {
+  font-family: "Fredoka", sans-serif;
+  color: var(--teks-lembut);
+  background: #EEE8F7;
+  border: 3px dashed #B8AECD;
+  border-radius: 14px;
+  padding: 8px 12px;
+}
+.area-pesan { min-height: 28px; font-weight: 800; color: var(--ungu); }
+
+/* ---------- 6. REKURSIF (Hanoi & jejak panggilan) ---------- */
+.papan-hanoi { display: flex; justify-content: space-around; align-items: flex-end; gap: 8px; padding: 10px 0; }
+.tiang {
+  flex: 1;
+  max-width: 220px;
+  height: 230px;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;     /* piringan menumpuk dari bawah */
+  align-items: center;
+  padding-bottom: 28px;
+}
+.tiang::before {                      /* batang tiang */
+  content: "";
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  width: 12px;
+  height: 190px;
+  margin-left: -6px;
+  background: #B89B7A;
+  border-radius: 8px 8px 0 0;
+}
+.tiang::after {                       /* alas tiang + nama (A/B/C) */
+  content: attr(data-nama);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Fredoka", sans-serif;
+  background: #8E7455;
+  color: #fff;
+  border-radius: 10px;
+  height: 26px;
+  line-height: 26px;
+}
+.piringan {
+  position: relative;               /* di atas batang tiang */
+  z-index: 1;
+  height: 28px;
+  margin-top: 2px;
+  border-radius: 14px;
+  color: #fff;
+  font-family: "Fredoka", sans-serif;
+  text-align: center;
+  line-height: 28px;
+  box-shadow: 0 3px 0 rgba(59, 47, 74, 0.2);
+  transition: all 0.3s;
+}
+.piringan[data-ukuran="1"] { width: 50px;  background: var(--pink); }
+.piringan[data-ukuran="2"] { width: 80px;  background: var(--oranye); }
+.piringan[data-ukuran="3"] { width: 110px; background: var(--hijau); }
+.piringan[data-ukuran="4"] { width: 140px; background: var(--biru); }
+.piringan[data-ukuran="5"] { width: 170px; background: var(--ungu); }
+.tiang.sorot::before { background: var(--kuning); }
+
+/* Jejak pemanggilan fungsi: menjorok sesuai kedalaman rekursi */
+.jejak { display: flex; flex-direction: column; gap: 6px; max-height: 380px; overflow-y: auto; padding: 4px; }
+.jejak-item {
+  margin-left: calc(var(--dalam, 0) * 22px);
+  padding: 8px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  animation: muncul 0.25s ease-out;
+}
+.jejak-item.panggil { background: #DDEBFB; color: #1F5F99; }    /* fungsi dipanggil */
+.jejak-item.kembali { background: #D5F5F1; color: #17766C; }    /* fungsi mengembalikan nilai */
+.hasil-besar { font-family: "Fredoka", sans-serif; font-size: 1.6rem; color: var(--ungu); }
+
+/* ---------- 7. BACKTRACKING (laberin) ---------- */
+.laberin {
+  display: grid;                      /* jumlah kolom diatur oleh JavaScript */
+  width: min(92vw, 520px);
+  margin: 10px auto;
+  gap: 2px;
+  padding: 8px;
+  background: #E9E1F7;
+  border-radius: 18px;
+  touch-action: manipulation;
+}
+.sel {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.7rem, 2.6vw, 1.3rem);
+  transition: background 0.2s, transform 0.2s;
+}
+.sel.tembok { background: #6B5E7B; border-radius: 4px; }
+.sel.mulai { background: var(--hijau); }
+.sel.selesai { background: var(--kuning); }
+.sel.pemain { background: #FFC2D9; }                 /* jalur buatan pemain */
+.sel.posisi { background: var(--pink); transform: scale(1.1); }   /* posisi pemain sekarang */
+.sel.coba { background: #BFD9F5; }                   /* sedang dicoba */
+.sel.mundur { background: #FFB4B2; }                 /* buntu, mundur (backtrack) */
+.sel.jalur { background: var(--hijau); }             /* jalan keluar yang benar */
+.legenda { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: center; font-weight: 800; font-size: 0.95rem; }
+.legenda span::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  margin-right: 6px;
+  vertical-align: -2px;
+  background: var(--warna);
+}
+.dpad { display: grid; grid-template-columns: repeat(3, 64px); gap: 8px; justify-content: center; margin: 10px 0; }
+.dpad .tombol { padding: 0; font-size: 1.5rem; }
+.dpad .atas { grid-column: 2; }
+.dpad .kiri { grid-column: 1; grid-row: 2; }
+.dpad .bawah { grid-column: 2; grid-row: 2; }
+.dpad .kanan { grid-column: 3; grid-row: 2; }
+
+/* ---------- 8. TOAST, KONFETI, ANIMASI, RESPONSIF ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 140px);
+  max-width: 92vw;
+  padding: 14px 24px;
+  border-radius: 18px;
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.15rem;
+  color: #fff;
+  background: var(--ungu);
+  box-shadow: 0 6px 0 rgba(59, 47, 74, 0.25);
+  transition: transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1);
+  z-index: 50;
+  text-align: center;
+}
+.toast.tampil { transform: translate(-50%, 0); }
+.toast.benar { background: var(--hijau); }
+.toast.salah { background: var(--oranye); }     /* oranye lembut, bukan merah, supaya tidak menyalahkan */
+
+#konfeti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 40; }
+.kepingan { position: absolute; top: -20px; width: 12px; height: 18px; border-radius: 3px; animation: jatuh 2.5s linear forwards; }
+
+@keyframes jatuh { to { transform: translateY(110vh) rotate(720deg); } }
+@keyframes melayang { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes muncul { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+@keyframes goyang { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+/* Layar kecil (HP) */
+@media (max-width: 600px) {
+  .navbar { padding: 10px 12px; justify-content: center; }
+  .brand { font-size: 1.3rem; }
+  .nav-link { padding: 7px 12px; font-size: 0.95rem; }
+  .judul-halaman { font-size: 1.6rem; }
+  .hero h1 { font-size: 1.9rem; }
+  .node { min-width: 52px; height: 52px; font-size: 1.2rem; }
+  .tiang { height: 200px; }
+  .tiang::before { height: 165px; }
+  .piringan[data-ukuran="5"] { width: 120px; }
+  .piringan[data-ukuran="4"] { width: 100px; }
+  .piringan[data-ukuran="3"] { width: 80px; }
+  .piringan[data-ukuran="2"] { width: 60px; }
+  .piringan[data-ukuran="1"] { width: 40px; }
+}
+
+/* Hormati pengguna yang tidak ingin banyak animasi */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

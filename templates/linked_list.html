@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block judul %}Linked List{% endblock %}
+
+{% block isi %}
+
+<h1 class="judul-halaman">🚂 Linked List: Kereta Node</h1>
+
+<!-- ===== Penjelasan konsep dengan bahasa sederhana ===== -->
+<section class="kotak-penjelasan">
+  <h2>Apa itu Linked List? 🤔</h2>
+  <p>Bayangkan sebuah <b>kereta api</b>. Setiap gerbong (disebut <b>node</b>) membawa satu isi,
+     dan punya <b>gandengan</b> (disebut <b>pointer</b>) yang menunjuk ke gerbong berikutnya.</p>
+  <p>Gerbong paling depan namanya <b>head</b>. Gerbong paling belakang menunjuk ke
+     <b>NULL</b>, artinya "sudah habis, tidak ada gerbong lagi".</p>
+  <p>Mau menambah atau menghapus gerbong? Cukup <b>pindahkan gandengannya</b>,
+     tanpa harus menggeser semua gerbong lainnya. Keren, kan? 😎</p>
+</section>
+
+<!-- ===== PUZZLE 1: Susun Gerbong ===== -->
+<section class="kartu">
+  <h2>🧩 Puzzle 1: Susun Gerbong</h2>
+  <p>Urutkan gerbong dari angka <b>paling kecil</b> ke <b>paling besar</b>.
+     Caranya: <b>ketuk dua gerbong</b> untuk saling bertukar tempat!</p>
+
+  <!-- Rantai node puzzle diisi oleh JavaScript -->
+  <div id="rantai-puzzle" class="rantai"></div>
+  <div id="pesan-puzzle" class="area-pesan"></div>
+
+  <div class="baris-tombol">
+    <button id="btn-puzzle-cek" class="tombol tombol-hijau">✅ Cek Jawaban</button>
+    <button id="btn-puzzle-baru" class="tombol tombol-oranye">🔄 Puzzle Baru</button>
+  </div>
+</section>
+
+<!-- ===== PUZZLE 2: Lab Linked List (insert, delete, traverse) ===== -->
+<section class="kartu">
+  <h2>🔬 Puzzle 2: Lab Linked List</h2>
+  <p>Coba sendiri! Tambah, sisipkan, hapus, cari, atau telusuri gerbongnya.
+     Perhatikan bagaimana <b>panah (pointer)</b> berubah setiap kali.</p>
+
+  <!-- Rantai node untuk lab diisi oleh JavaScript -->
+  <div id="rantai-lab" class="rantai"></div>
+  <div id="pesan-lab" class="area-pesan"></div>
+
+  <!-- Input angka dan posisi -->
+  <div class="baris-tombol">
+    <label class="label-kecil" for="input-nilai">Angka:</label>
+    <input id="input-nilai" class="input-angka" type="number" inputmode="numeric" placeholder="mis. 7">
+    <label class="label-kecil" for="input-posisi">Posisi:</label>
+    <input id="input-posisi" class="input-angka" type="number" inputmode="numeric" min="0" placeholder="mis. 1">
+  </div>
+
+  <!-- Tombol operasi. data-operasi dikirim ke server (lihat /api/linked-list/operasi) -->
+  <div class="baris-tombol">
+    <button class="tombol tombol-biru btn-operasi" data-operasi="append">➡️ Tambah di Akhir</button>
+    <button class="tombol tombol-pink btn-operasi" data-operasi="prepend">⬅️ Tambah di Depan</button>
+    <button class="tombol btn-operasi" data-operasi="insert">✨ Sisipkan di Posisi</button>
+  </div>
+  <div class="baris-tombol">
+    <button class="tombol tombol-merah btn-operasi" data-operasi="delete">🗑️ Hapus Angka</button>
+    <button class="tombol tombol-oranye btn-operasi" data-operasi="search">🔍 Cari Angka</button>
+    <button class="tombol tombol-hijau btn-operasi" data-operasi="traverse">👀 Telusuri</button>
+    <button id="btn-lab-reset" class="tombol tombol-abu">♻️ Reset</button>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block skrip %}
+<script src="{{ url_for('static', filename='js/linked_list.js') }}"></script>
+{% endblock %}

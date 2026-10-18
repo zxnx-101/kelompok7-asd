@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport: supaya tampilan pas di layar HP -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block judul %}Puzzle Algoritma{% endblock %} | Puzzle Algoritma</title>
+
+  <!-- Font bulat dan ramah anak: Fredoka (judul) & Nunito (isi) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- CSS utama kita -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- ===== NAVBAR: sama di semua halaman supaya navigasi konsisten ===== -->
+  <header class="navbar">
+    <a href="{{ url_for('beranda') }}" class="brand">🧩 Puzzle Algoritma</a>
+    <nav class="nav-links">
+      <!-- request.endpoint dipakai untuk menandai menu yang sedang dibuka -->
+      <a href="{{ url_for('halaman_linked_list') }}"
+         class="nav-link {{ 'aktif' if request.endpoint == 'halaman_linked_list' }}">🚂 Linked List</a>
+      <a href="{{ url_for('halaman_rekursif') }}"
+         class="nav-link {{ 'aktif' if request.endpoint == 'halaman_rekursif' }}">🪆 Rekursif</a>
+      <a href="{{ url_for('halaman_backtracking') }}"
+         class="nav-link {{ 'aktif' if request.endpoint == 'halaman_backtracking' }}">🌀 Laberin</a>
+    </nav>
+  </header>
+
+  <!-- ===== ISI HALAMAN: diisi oleh template anak (index, linked_list, dst) ===== -->
+  <main class="halaman">
+    {% block isi %}{% endblock %}
+  </main>
+
+  <footer class="footer">Dibuat dengan 💜 untuk belajar Struktur Data</footer>
+
+  <!-- Kotak pesan (toast) untuk feedback benar/salah. Dipakai semua halaman. -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <!-- Wadah konfeti untuk perayaan saat jawaban benar -->
+  <div id="konfeti" aria-hidden="true"></div>
+
+  <script>
+    /* ---------- Fungsi bantu global (dipakai di semua halaman) ---------- */
+
+    // Tampilkan pesan singkat. jenis: 'benar' | 'salah' | 'info'
+    function tampilToast(pesan, jenis = "info") {
+      const t = document.getElementById("toast");
+      t.textContent = pesan;
+      t.className = "toast tampil " + jenis;
+      clearTimeout(window._timerToast);
+      window._timerToast = setTimeout(() => t.classList.remove("tampil"), 3200);
+    }
+
+    // Hujan konfeti warna-warni untuk merayakan jawaban benar 🎉
+    function hujanKonfeti() {
+      const wadah = document.getElementById("konfeti");
+      const warna = ["#FF6B9D", "#FFD166", "#2EC4B6", "#7B6CF6", "#FF9F43", "#4D9DE0"];
+      for (let i = 0; i < 40; i++) {
+        const k = document.createElement("span");
+        k.className = "kepingan";
+        k.style.left = Math.random() * 100 + "vw";
+        k.style.background = warna[i % warna.length];
+        k.style.animationDelay = Math.random() * 0.6 + "s";
+        k.style.animationDuration = 1.8 + Math.random() * 1.4 + "s";
+        wadah.appendChild(k);
+        setTimeout(() => k.remove(), 3500);   // bersihkan setelah selesai
+      }
+    }
+
+    // Jeda (dipakai untuk animasi langkah demi langkah). Contoh: await tunggu(300)
+    const tunggu = (ms) => new Promise((selesai) => setTimeout(selesai, ms));
+  </script>
+
+  <!-- Tempat script khusus tiap halaman -->
+  {% block skrip %}{% endblock %}
+</body>
+</html>
