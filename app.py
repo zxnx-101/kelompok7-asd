@@ -28,6 +28,48 @@ def ambil_int(nilai, default=None):
         return default
 
 
+# ---------------------------------------------------------------------
+# Fungsi bantu: validasi data laberin dari klien
+# ---------------------------------------------------------------------
+def validasi_laberin(body, ukuran_maks=25):
+    """Cek data laberin dari klien. Return (grid, mulai, selesai) atau None.
+
+    Tujuan: tolak request aneh/berbahaya SEBELUM masuk ke algoritma backtracking.
+    Tanpa ini, klien bisa kirim grid 500x500 -> Python crash karena RecursionError,
+    dan kuota Vercel gratis bisa cepat habis.
+    """
+    grid = body.get("grid")
+    mulai = body.get("mulai")
+    selesai = body.get("selesai")
+
+    # 1) grid harus list of list, ukuran wajar (7..ukuran_maks)
+    if not isinstance(grid, list):
+        return None
+    if not (7 <= len(grid) <= ukuran_maks):
+        return None
+
+    # 2) setiap baris harus sama panjang & isinya cuma 0 atau 1
+    n = len(grid)
+    for baris in grid:
+        if not isinstance(baris, list) or len(baris) != n:
+            return None
+        if not all(cell in (0, 1) for cell in baris):
+            return None
+
+    # 3) mulai & selesai harus [baris, kolom] integer di dalam grid
+    def posisi_valid(p):
+        return (
+            isinstance(p, list) and len(p) == 2
+            and all(isinstance(x, int) for x in p)
+            and 0 <= p[0] < n and 0 <= p[1] < n
+        )
+
+    if not posisi_valid(mulai) or not posisi_valid(selesai):
+        return None
+
+    return grid, mulai, selesai
+
+
 # =====================================================================
 # ROUTE HALAMAN (yang tampil di browser)
 # =====================================================================
@@ -130,17 +172,22 @@ def api_laberin_baru():
 def api_laberin_solusi():
     """Selesaikan laberin dengan backtracking dan kirim langkah animasinya."""
     body = request.get_json(silent=True) or {}
-    hasil = algoritma.selesaikan_laberin(body["grid"], body["mulai"], body["selesai"])
-    return jsonify(hasil)
+    data = validasi_laberin(body)
+    if data is None:
+        return jsonify({"error": "Data laberin tidak valid"}), 400
+    grid, mulai, selesai = data
+    return jsonify(algoritma.selesaikan_laberin(grid, mulai, selesai))
 
 
 @app.route("/api/laberin/cek", methods=["POST"])
 def api_laberin_cek():
     """Cek apakah jalur buatan pemain sampai ke finish dengan benar."""
     body = request.get_json(silent=True) or {}
-    benar = algoritma.cek_jalur_pemain(
-        body["grid"], body.get("jalur", []), body["mulai"], body["selesai"]
-    )
+    data = validasi_laberin(body)
+    if data is None:
+        return jsonify({"error": "Data laberin tidak valid"}), 400
+    grid, mulai, selesai = data
+    benar = algoritma.cek_jalur_pemain(grid, body.get("jalur", []), mulai, selesai)
     return jsonify({"benar": benar})
 
 
